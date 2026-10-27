@@ -1,0 +1,29 @@
+CREATE DATABASE IF NOT EXISTS inventaris_lab_2401020014
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE inventaris_lab_2401020014;
+
+CREATE TABLE ruang (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nama_ruang VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+CREATE TABLE inventaris (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    kode_barang CHAR(10) NOT NULL UNIQUE,
+    nama_barang VARCHAR(100) NOT NULL,
+    nomor_aset VARCHAR(30) NOT NULL UNIQUE,
+    tahun_perolehan SMALLINT UNSIGNED NOT NULL,
+    ruang_id BIGINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_inventaris_ruang
+        FOREIGN KEY (ruang_id)
+        REFERENCES ruang(id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    CONSTRAINT chk_tahun_perolehan
+        CHECK (tahun_perolehan BETWEEN 2000 AND 2026)
+) ENGINE=InnoDB;
